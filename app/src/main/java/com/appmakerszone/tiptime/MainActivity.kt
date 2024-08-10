@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -50,8 +51,12 @@ class MainActivity : ComponentActivity() {
 fun TipTimeLayout() {
 
     var amountInput by remember { mutableStateOf("") }
+    var tipInput by remember { mutableStateOf("") }
+    
     val amount = amountInput.toDoubleOrNull() ?: 0.0
-    val tip = calculateTip(amount = amount)
+    val tipPercent = tipInput.toDoubleOrNull() ?: 0.0
+
+    val tip = calculateTip(amount = amount, tipPercent = tipPercent)
 
     Column(
         modifier = Modifier
@@ -72,7 +77,17 @@ fun TipTimeLayout() {
 
         EditNumberField(
             value = amountInput,
+            label = R.string.bill_amount,
             onValueChange = { amountInput = it },
+            modifier = Modifier
+                .padding(bottom = 35.dp)
+                .fillMaxWidth()
+        )
+
+        EditNumberField(
+            value = tipInput,
+            label = R.string.how_was_the_service,
+            onValueChange = { tipInput = it },
             modifier = Modifier
                 .padding(bottom = 35.dp)
                 .fillMaxWidth()
@@ -90,6 +105,7 @@ fun TipTimeLayout() {
 fun EditNumberField(
     value: String,
     onValueChange: (String) -> Unit,
+    @StringRes label: Int,
     modifier: Modifier = Modifier
 ) {
 
@@ -97,7 +113,7 @@ fun EditNumberField(
         value = value,
         onValueChange = onValueChange,
         label = {
-            Text(text = stringResource(id = R.string.bill_amount))
+            Text(text = stringResource(id = label))
         },
         modifier = modifier,
         singleLine = true,
