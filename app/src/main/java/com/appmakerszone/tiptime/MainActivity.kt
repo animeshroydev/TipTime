@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,7 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -31,6 +33,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -39,7 +42,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.appmakerszone.tiptime.ui.theme.TipTimeTheme
 import java.text.NumberFormat
-import kotlin.math.roundToInt
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,6 +87,7 @@ fun TipTimeLayout() {
         EditNumberField(
             value = amountInput,
             label = R.string.bill_amount,
+            leadingIcon = R.drawable.money,
             onValueChange = { amountInput = it },
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Number,
@@ -98,6 +101,7 @@ fun TipTimeLayout() {
         EditNumberField(
             value = tipInput,
             label = R.string.how_was_the_service,
+            leadingIcon = R.drawable.percent,
             onValueChange = { tipInput = it },
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Number,
@@ -111,7 +115,7 @@ fun TipTimeLayout() {
         RoundTheTipRow(
             roundUp = roundUp,
             onRoundUpChanged = {
-              roundUp = it
+                roundUp = it
             },
             modifier = Modifier.padding(bottom = 32.dp)
         )
@@ -130,6 +134,7 @@ fun EditNumberField(
     value: String,
     onValueChange: (String) -> Unit,
     @StringRes label: Int,
+    @DrawableRes leadingIcon: Int,
     keyboardOptions: KeyboardOptions,
     modifier: Modifier = Modifier
 ) {
@@ -139,6 +144,12 @@ fun EditNumberField(
         onValueChange = onValueChange,
         label = {
             Text(text = stringResource(id = label))
+        },
+        leadingIcon = {
+            Icon(
+                painter = painterResource(id = leadingIcon),
+                contentDescription = "Leading Icon"
+            )
         },
         modifier = modifier,
         singleLine = true,
@@ -172,9 +183,11 @@ fun RoundTheTipRow(
 
 }
 
-private fun calculateTip(amount: Double,
-                         tipPercent: Double = 15.0,
-                         roundUp: Boolean): String {
+private fun calculateTip(
+    amount: Double,
+    tipPercent: Double = 15.0,
+    roundUp: Boolean
+): String {
     var tip = tipPercent / 100 * amount
     if (roundUp) {
         tip = kotlin.math.ceil(tip)
