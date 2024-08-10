@@ -16,3 +16,5 @@ Topic Covered:
 * Use the switch toggle button
 
 App Screenshot: https://photos.app.goo.gl/N3UWjDcaAZMZMcBQA
+
+Read this [medium article](https://medium.com/@royanimesh2211/core-of-jetpack-compose-what-is-stateless-stateful-composition-recomposition-and-state-48ec24703b4a) to understand all the above JetPack Compose Concept.
