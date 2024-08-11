@@ -14,6 +14,7 @@ Topic Covered:
 * How to use onValueChange event handler
 * Use of KeyboardOptions, ImeAction and KeyboardType
 * Use the switch toggle button
+* Automated Unit test and Instrumentation Test
 
 App Screenshot: https://photos.app.goo.gl/N3UWjDcaAZMZMcBQA
 
